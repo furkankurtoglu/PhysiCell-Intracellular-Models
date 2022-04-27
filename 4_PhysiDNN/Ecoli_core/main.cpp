@@ -93,7 +93,15 @@ int main( int argc, char* argv[] )
 {
 	// load and parse settings file(s)
 	
-
+	// load and parse settings file(s)
+	
+    auto model = keras2cpp::Model::load("WT_Keras");
+    keras2cpp::Tensor in{3};
+    in.data_ = {-500.0,0,-80}; //oxygen,glutamine,glucose
+    keras2cpp::Tensor out = model(in);
+    out.print();
+    
+    return 0;
     
 	bool XML_status = false; 
 	char copy_command [1024]; 

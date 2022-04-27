@@ -97,7 +97,7 @@
 	</overall>
 	
 	<parallel>
-		<omp_num_threads>8</omp_num_threads>
+		<omp_num_threads>1</omp_num_threads>
 	</parallel> 
 	
 	<save>
@@ -179,7 +179,7 @@
 	</microenvironment_setup>
 	
 	<cell_definitions>
-		<cell_definition name="CRC" ID="0">
+		<cell_definition name="default" ID="0">
 			<phenotype>
 				<cycle code="6" name="Flow cytometry model (separated)">  
 					<!-- phases are: G0/G1 , S, G2, M --> 
@@ -314,7 +314,6 @@
 						<net_export_rate units="total substrate/min">0</net_export_rate> 
 					</substrate> 
 				</secretion>
-
 				<molecular />
 			</phenotype>
 			<custom_data>  

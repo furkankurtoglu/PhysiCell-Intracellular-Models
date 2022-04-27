@@ -150,8 +150,8 @@ void setup_tissue( void )
     
     for( int i=0; i < positions.size(); i++ )
     {
-        pCell = create_cell();
-        pCell->functions.volume_update_function = standard_volume_update_function;
+        pCell = create_cell(get_cell_definition("default"));
+        pCell->functions.volume_update_function = NULL;
         pCell->assign_position( positions[i] );
 	}
 	
@@ -170,25 +170,25 @@ std::vector<std::string> my_coloring_function( Cell* pCell )
 	{
 		if( pCell->phenotype.cycle.current_phase_index() == 0 )
         {
-            if (pCell->custom_data[biomass_vi] < 1)
+            if (pCell->custom_data[biomass_vi] < 10)
             {
                 output[0] = "brown"; 
                 output[2] = "brown";
               //  std::cout << "BROOWN =  " <<pCell->custom_data[biomass_vi] << std::endl;
             }
-            if (pCell->custom_data[biomass_vi] < 0.7)
+            if (pCell->custom_data[biomass_vi] < 5)
             {
                 output[0] = "red"; 
                 output[2] = "red"; 
               //  std::cout << "RED =  " <<pCell->custom_data[biomass_vi] << std::endl;
             }
-            if (pCell->custom_data[biomass_vi] < 0.5)
+            if (pCell->custom_data[biomass_vi] < 3)
             {
                 output[0] = "orange"; 
                 output[2] = "orange"; 
                // std::cout << "ORANGE =  " <<pCell->custom_data[biomass_vi] << std::endl;
             }
-            if (pCell->custom_data[biomass_vi] < 0.3)
+            if (pCell->custom_data[biomass_vi] < 1)
             {
                 output[0] = "yellow"; 
                 output[2] = "yellow"; 
@@ -247,21 +247,22 @@ void intracellular_DNN()
         float fl_glc = glc_val_int;
         float fl_oxy = oxy_val_int;
         //std::cout << "oxygen --> " << fl_oxy << "        " << "glucose --->    " << fl_glc << std::endl;
-		auto model = keras2cpp::Model::load("ecoli_model"); //model input
+		auto model = keras2cpp::Model::load("WT_Keras"); //model input
 		keras2cpp::Tensor in{2}; //
 		in.data_ = {fl_oxy,fl_glc};
 		keras2cpp::Tensor out = model(in); // model evaluation
 		//out.print();
-		keras2cpp::Tensor res = out;
-        std::vector<double> result;
+		//keras2cpp::Tensor res = out;
+        std::vector<double> result; // try to escape copying 
         result = out.result_vector();
         double biomass_creation_flux = result[2]/2;
         (*all_cells)[i]->custom_data[biomass_vi]  = biomass_creation_flux;
         //std::cout << (*all_cells)[i]->custom_data[biomass_vi] << std::endl;
         
         double volume_increase_ratio = 1 + (biomass_creation_flux / 60) * 0.01;
-        (*all_cells)[i]->phenotype.volume.multiply_by_ratio(volume_increase_ratio);
-        
+        std::cout << "TOTAL VOLUME OF CELL BEFORE : " << (*all_cells)[i]->phenotype.volume.target_solid_nuclear << std::endl;
+        (*all_cells)[i]->phenotype.volume.multiply_by_ratio(100);
+        std::cout << "TOTAL VOLUME OF CELL AFTER : " << (*all_cells)[i]->phenotype.volume.target_solid_nuclear << std::endl;
 /*         if ( (*all_cells)[i]->phenotype.volume.total > 2494*2)
         {
             (*all_cells)[i]->phenotype.cycle.data.transition_rate(0,1) = 9e99;

@@ -1,4 +1,3 @@
-
 function [Model, stat, tmp_sol, v, r, p, q, Right_Mod] = upFBA_pipeline_maxBiomass(Model, initvalue, met_IDs, foldchange_means, foldchange_sds, SPECIES_BOUND)
 
     %% estimate metabolite rates of change
@@ -35,6 +34,10 @@ function [Model, stat, tmp_sol, v, r, p, q, Right_Mod] = upFBA_pipeline_maxBioma
 %         tmp_model = changeRxnBounds(tmp_model, tmp_model.rxns{j}, 0.0, 'l');
         tmp_model = Model;
         tmp_sol = optimizeCbModel(tmp_model, 'max');
+        tmp_sol;
+
+        save('tmp_sol.mat',"tmp_sol");
+
         if ~tmp_sol.stat
             relaxOption.internalRelax = 0;
             relaxOption.exchangeRelax = 0;
@@ -45,6 +48,7 @@ function [Model, stat, tmp_sol, v, r, p, q, Right_Mod] = upFBA_pipeline_maxBioma
             mets_to_exclude(contains(tmp_model.mets, "_lower")) = true;
             relaxOption.excludedMetabolites = mets_to_exclude;
             solution = relaxedFBA(tmp_model,relaxOption);
+            solution;
             [stat,v,r,p,q] = deal(solution.stat, solution.v, solution.r, solution.p, solution.q);
             if stat == 0
                 v = zeros(size(tmp_model.rxns));
@@ -79,13 +83,20 @@ function [Model, stat, tmp_sol, v, r, p, q, Right_Mod] = upFBA_pipeline_maxBioma
                 end
             end
         else
-
             
+            stat = tmp_sol.stat;
+            %As there is no relaxation, no need to save relaxed FBA outputs
+            v = zeros(size(tmp_model.rxns)); 
+            r = zeros(size(tmp_model.mets));
+            p = zeros(size(tmp_model.rxns));
+            q = zeros(size(tmp_model.rxns));
+            Right_Mod = tmp_model;
             if tmp_sol.f > 0
                 knockdown_biomass_mat(1) = tmp_sol.f;
             else
                 knockdown_biomass_mat(1) = 0;
             end
+%             tmp_sol = ;
         end
 %     end
     
