@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # load the dataset
-dataset = loadtxt('KRAS_in_silico_data.csv', delimiter=',')
+dataset = loadtxt('WT_in_silico_data.csv', delimiter=',')
 data = np.array(dataset)
 np.random.shuffle(data)
 

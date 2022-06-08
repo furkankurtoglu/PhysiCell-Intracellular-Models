@@ -97,7 +97,7 @@ int main( int argc, char* argv[] )
 	
     auto model = keras2cpp::Model::load("WT_Keras");
     keras2cpp::Tensor in{3};
-    in.data_ = {-500.0,0,-80}; //oxygen,glutamine,glucose
+    in.data_ = {-500.0,0,-100}; //oxygen,glutamine,glucose
     keras2cpp::Tensor out = model(in);
     out.print();
     
