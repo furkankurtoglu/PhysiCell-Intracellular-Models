@@ -157,7 +157,7 @@ function [right] = upFBA_model_maxBiomass(init_value_data, fold_change_kras_data
     
     %% clear all unsteady-state assumptions
     %% perform upFBA ------ Glycolysis, PPP, and TCA cycle
-    num_of_met_run = 10;
+    num_of_met_run = 20;
     num_of_FBA_runs = num_of_met_run*num_of_met_run*num_of_met_run;
     WT_Model = struct;
     WT_Model.model_lst = cell(1, num_of_FBA_runs);
@@ -226,7 +226,7 @@ function [right] = upFBA_model_maxBiomass(init_value_data, fold_change_kras_data
                     WT_Model.initvalue_lst = [WT_Model.initvalue_lst initvalue];
                     i=i+1;
                     fprintf('m = %i\t %i\t %i\t %i\n', k,l,m,solution)
-                    sol_vector = [oxy_bds(k),gln_bds(l),glc_bds(m),solution];
+                    sol_vector = [-1*oxy_bds(k),-1*gln_bds(l),-1*glc_bds(m),solution];
                     if save_data == "Y"
                         writematrix(sol_vector,'WT_in_silico_data.csv',Delimiter=',',WriteMode='append');
                     end
@@ -283,7 +283,7 @@ function [right] = upFBA_model_maxBiomass(init_value_data, fold_change_kras_data
                     solution = sol.x(73);
                     i=i+1;
                     %fprintf('m = %i\t %i\t %i\t %i\n', k,l,m,solution)
-                    sol_vector = [oxy_bds(k),gln_bds(l),glc_bds(m),solution];
+                    sol_vector = [-1*oxy_bds(k),-1*gln_bds(l),-1*glc_bds(m),solution];
                     if save_data == "Y"
                         writematrix(sol_vector,'KRAS_in_silico_data.csv',Delimiter=',',WriteMode='append');
                     end

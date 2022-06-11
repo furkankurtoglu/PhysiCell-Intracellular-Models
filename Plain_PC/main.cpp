@@ -225,7 +225,7 @@ int main( int argc, char* argv[] )
 			/*
 			  Custom add-ons could potentially go here. 
 			*/
-			//intracellular_DNN();
+			intracellular_DNN();
             
 			PhysiCell_globals.current_time += diffusion_dt;
 		}
