@@ -332,7 +332,7 @@
 	<user_parameters>
 		<random_seed type="int" units="dimensionless">0</random_seed> 
 		
-		<tumor_radius type="double" units="micron" description="tumor radius">10</tumor_radius>		
+		<tumor_radius type="double" units="micron" description="tumor radius">284</tumor_radius>		
 	</user_parameters>
 	
 </PhysiCell_settings>

@@ -189,7 +189,7 @@ function [right] = upFBA_model_maxBiomass(init_value_data, fold_change_kras_data
 
     oxy_bds = linspace(-500, 0,num_of_met_run);
     gln_bds = linspace(0, 0,num_of_met_run);
-    glc_bds = linspace(-100, 0,num_of_met_run);
+    glc_bds = linspace(-0.22, 0,num_of_met_run);
 
     save('init_vals.mat',"init_value_mat");
     sol_vector = zeros(1,4);
@@ -228,7 +228,7 @@ function [right] = upFBA_model_maxBiomass(init_value_data, fold_change_kras_data
                     fprintf('m = %i\t %i\t %i\t %i\n', k,l,m,solution)
                     sol_vector = [-1*oxy_bds(k),-1*gln_bds(l),-1*glc_bds(m),solution];
                     if save_data == "Y"
-                        writematrix(sol_vector,'WT_in_silico_data.csv',Delimiter=',',WriteMode='append');
+                        writematrix(sol_vector,'focused_WT_in_silico_data.csv',Delimiter=',',WriteMode='append');
                     end
                 end
             end
@@ -285,7 +285,7 @@ function [right] = upFBA_model_maxBiomass(init_value_data, fold_change_kras_data
                     %fprintf('m = %i\t %i\t %i\t %i\n', k,l,m,solution)
                     sol_vector = [-1*oxy_bds(k),-1*gln_bds(l),-1*glc_bds(m),solution];
                     if save_data == "Y"
-                        writematrix(sol_vector,'KRAS_in_silico_data.csv',Delimiter=',',WriteMode='append');
+                        writematrix(sol_vector,'focused_KRAS_in_silico_data.csv',Delimiter=',',WriteMode='append');
                     end
                 end
             end

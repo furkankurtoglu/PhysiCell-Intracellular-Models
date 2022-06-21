@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # load the dataset
-dataset = loadtxt('WT_in_silico_data.csv', delimiter=',')
+dataset = loadtxt('focused_WT_in_silico_data.csv', delimiter=',')
 sorted_data = np.array(dataset)
 data = np.array(dataset)
 np.random.shuffle(data)
@@ -39,7 +39,7 @@ test_data = data[splitter:]
 
 # split into input (X) and output (y) variables
 X = training_data[:,0:3]
-y = training_data[:,3]
+y = training_data[:,3]*100
 
 
 # define the keras model
@@ -62,7 +62,7 @@ plt.show()
 
 #%%
 x_test_data = test_data[:,0:3]
-y_test_data = test_data[:,3]
+y_test_data = test_data[:,3]*100
 
 
 # evaluate the keras model

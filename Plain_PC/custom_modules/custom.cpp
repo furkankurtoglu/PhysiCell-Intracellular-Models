@@ -237,30 +237,36 @@ void intracellular_DNN()
         float fl_glc = glc_val_int;
         float fl_oxy = oxy_val_int;
         //std::cout << "oxygen --> " << fl_oxy << "        " << "glucose --->    " << fl_glc << std::endl;
-		auto model = keras2cpp::Model::load("Wild_Type.model"); //model input
+		/* auto model = keras2cpp::Model::load("Wild_Type.model"); //model input
 		keras2cpp::Tensor in{3}; //
 		in.data_ = {fl_glc,0,fl_oxy};
 		keras2cpp::Tensor out = model(in); // model evaluation
-		out.print();
+		//out.print();
 		//keras2cpp::Tensor res = out;
         std::vector<double> result; // try to escape copying 
         result = out.result_vector();
-        double biomass_creation_flux = result[0];
         (*all_cells)[i]->custom_data[biomass_vi]  = biomass_creation_flux;
-        //std::cout << (*all_cells)[i]->custom_data[biomass_vi] << std::endl;
-        
+        //std::cout << (*all_cells)[i]->custom_data[biomass_vi] << std::endl; */
+        double biomass_creation_flux = 0.035;        
         double volume_increase_ratio = 1 + ( biomass_creation_flux / 60) * 0.01;
-        //std::cout << "TOTAL VOLUME OF CELL BEFORE : " << (*all_cells)[i]->phenotype.volume.target_solid_nuclear << std::endl;
-        //(*all_cells)[i]->phenotype.volume.multiply_by_ratio(volume_increase_ratio);
-        //std::cout << "TOTAL VOLUME OF CELL AFTER : " << (*all_cells)[i]->phenotype.volume.target_solid_nuclear << std::endl;
+        //std::cout << "TOTAL VOLUME OF CELL BEFORE : " << (*all_cells)[i]->phenotype.volume.total << std::endl;
+        (*all_cells)[i]->phenotype.volume.multiply_by_ratio(volume_increase_ratio);
+        //std::cout << "TOTAL VOLUME OF CELL AFTER : " << (*all_cells)[i]->phenotype.volume.total << std::endl;
         if ( (*all_cells)[i]->phenotype.volume.total > 2494*2)
         {
-             //std::cout << "Volume is big enough to divide" << std::endl;
+            //std::cout << "Volume is big enough to divide" << std::endl;
             (*all_cells)[i]->phenotype.cycle.data.transition_rate(0,1) = 9e99;
             (*all_cells)[i]->phenotype.cycle.data.transition_rate(1,2) = 9e99;
             (*all_cells)[i]->phenotype.cycle.data.transition_rate(2,3) = 9e99;
             (*all_cells)[i]->phenotype.cycle.data.transition_rate(3,0) = 9e99;
         }
+		else
+		{
+			(*all_cells)[i]->phenotype.cycle.data.transition_rate(0,1) = 0;
+            (*all_cells)[i]->phenotype.cycle.data.transition_rate(1,2) = 0;
+            (*all_cells)[i]->phenotype.cycle.data.transition_rate(2,3) = 0;
+            (*all_cells)[i]->phenotype.cycle.data.transition_rate(3,0) = 0;
+		}
 	}
 	return;
 }
